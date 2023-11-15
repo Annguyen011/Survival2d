@@ -5,11 +5,10 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private float timeSpawn = 2f;
-
+    public SpawnData[] spawnData;
     private List<Transform> points = new List<Transform>();
     private float timer;
-    private int enemyRan;
+    private int level;
     private PoolingName type;
 
     private void Start()
@@ -29,8 +28,9 @@ public class Spawner : MonoBehaviour
     private void TimeCounter()
     {
         timer += Time.deltaTime;
+        level = Mathf.Min(Mathf.FloorToInt(GameManager.instance.gameTime / 10f), spawnData.Length - 1);
 
-        if (timer > timeSpawn)
+        if (timer > spawnData[level].spawnTime)
         {
             timer = 0;
             Spawn();
@@ -39,9 +39,7 @@ public class Spawner : MonoBehaviour
 
     private void Spawn()
     {
-        enemyRan = UnityEngine.Random.Range(0, (int)Enum.GetNames(typeof(PoolingName)).Length);
-
-        switch (enemyRan)
+        switch (level)
         {
             case 0:
                 type = PoolingName.Enemy01;
@@ -52,7 +50,7 @@ public class Spawner : MonoBehaviour
             case 2:
                 type = PoolingName.Enemy03;
                 break;
-            case 3:
+            default:
                 type = PoolingName.Enemy04;
                 break;
 
@@ -60,5 +58,8 @@ public class Spawner : MonoBehaviour
 
         GameObject enemy = GameManager.instance.poolManager.Get(type);
         enemy.transform.position = points[UnityEngine.Random.Range(0, points.Count)].position;
+        enemy.GetComponent<Enemy>().Init(data: spawnData[level]);
     }
+
+
 }

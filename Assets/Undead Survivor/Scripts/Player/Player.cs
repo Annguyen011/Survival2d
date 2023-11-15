@@ -8,13 +8,14 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Animator))]
 public class Player : MonoBehaviour
 {
-    [Header("Movement info")]
+    [Header("# Movement info")]
     public Vector2 inputVec;
     [SerializeField] private float speed = 5f;
     [SerializeField] private float timeSmooth;
     private Vector2 vecSmooth = Vector2.zero;
 
     #region Components
+    public Scaner scaner;
     private Rigidbody2D rb;
     private Animator animator;
     private SpriteRenderer sprite;
@@ -23,6 +24,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        scaner = GetComponent<Scaner>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();

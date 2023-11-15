@@ -4,9 +4,18 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
+    [Header("# Timer")]
+    public float gameTime;
+    public float maxGameTimer = 40f;
+
+    [Header("# Data")]
+    public int level;
+    public int exp;
+    public int kill;
+    public int[] nextExp = { 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 100 };
 
     #region Components
-    [Header("Components")]
+    [Header("# Components")]
     public Player player;
     public PoolManager poolManager;
     #endregion
@@ -14,6 +23,16 @@ public class GameManager : Singleton<GameManager>
     {
         base.Awake();
         FillComponents();
+    }
+
+    private void Update()
+    {
+        gameTime += Time.deltaTime;
+
+        if (gameTime > maxGameTimer)
+        {
+            gameTime = maxGameTimer;
+        }
     }
 
     private void FillComponents()
@@ -26,6 +45,17 @@ public class GameManager : Singleton<GameManager>
         if (poolManager == null)
         {
             poolManager = GameObject.FindAnyObjectByType<PoolManager>();
+        }
+    }
+
+    public void GetExp()
+    {
+        exp++;
+
+        if (exp == nextExp[level])
+        {
+            level++;
+            exp = 0;
         }
     }
 }

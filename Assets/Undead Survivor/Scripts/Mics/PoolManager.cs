@@ -47,5 +47,7 @@ public enum PoolingName
     Enemy02,
     Enemy03,
     Enemy04,
-    Bullet
+    Enemy05,
+    Bullet0,
+    Bullet1
 }
